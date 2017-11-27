@@ -20,6 +20,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource"
           p:configLocation="classpath:sqlMapperConfig.xml"
+          p:mapperLocations="mapper/*.xml"
           p:typeAliasesPackage="com.cqupt.project"/>
 
     <!--采用自动扫描方式创建mapper bean-->
