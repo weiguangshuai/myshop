@@ -2,8 +2,4 @@
 
 #package file
 *.war
-*.ear
-
-#maven ingore
-target/
 
