@@ -35,6 +35,26 @@
         <include refid="Base_Column_List"/>
         FROM user WHERE username = #{username} AND password = #{password}
     </select>
+    <select id="checkEmail" resultType="java.lang.Integer" parameterType="string">
+        SELECT count(1)
+        FROM user
+        WHERE email = #{email}
+    </select>
+    <select id="selectQuestionByUsername" resultType="java.lang.String" parameterType="string">
+        SELECT question
+        FROM user
+        WHERE username = #{username}
+    </select>
+    <select id="checkAnswer" resultType="java.lang.Integer" parameterType="string">
+        SELECT count(1)
+        FROM user
+        WHERE username = #{username} AND question = #{question} AND answer = #{answer}
+    </select>
+    <select id="checkEmailByUserId" resultType="int" parameterType="map">
+        SELECT count(1)
+        FROM user
+        WHERE email = #{email} AND user_id != #{userId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         DELETE FROM user
         WHERE user_id = #{userId,jdbcType=BIGINT}
@@ -161,5 +181,10 @@
             create_time = #{createTime,jdbcType=TIMESTAMP},
             update_time = #{updateTime,jdbcType=TIMESTAMP}
         WHERE user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateUsername" parameterType="map">
+        UPDATE user
+        SET password = #{newPassword}, update_time = now()
+        WHERE username = #{username}
     </update>
 </mapper>
