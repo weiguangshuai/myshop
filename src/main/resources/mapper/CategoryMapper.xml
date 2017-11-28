@@ -101,7 +101,7 @@
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                update_time = now(),
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -113,7 +113,7 @@
             status      = #{status,jdbcType=BIT},
             sort_order  = #{sortOrder,jdbcType=INTEGER},
             create_time = #{createTime,jdbcType=TIMESTAMP},
-            update_time = #{updateTime,jdbcType=TIMESTAMP}
+            update_time = now()
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
