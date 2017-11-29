@@ -1,7 +1,7 @@
 package com.cqupt.project.shop.service;
 
 import com.cqupt.project.shop.common.ServerResponse;
-import com.cqupt.project.shop.entity.User;
+import com.cqupt.project.shop.pojo.User;
 
 /**
  * @author weigs
@@ -78,4 +78,12 @@ public interface UserService {
      * @return
      */
     ServerResponse<User> getUserInfo(Long userId);
+
+    /**
+     * 校验是否为管理员
+     *
+     * @param user
+     * @return
+     */
+    ServerResponse checkAdminRole(User user);
 }

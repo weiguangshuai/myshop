@@ -1,6 +1,6 @@
 package com.cqupt.project.shop.dao;
 
-import com.cqupt.project.shop.entity.Order;
+import com.cqupt.project.shop.pojo.Order;
 import org.springframework.stereotype.Repository;
 
 @Repository

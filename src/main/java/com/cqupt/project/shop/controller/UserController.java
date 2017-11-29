@@ -3,7 +3,7 @@ package com.cqupt.project.shop.controller;
 import com.cqupt.project.shop.common.Constant;
 import com.cqupt.project.shop.common.ResponseCode;
 import com.cqupt.project.shop.common.ServerResponse;
-import com.cqupt.project.shop.entity.User;
+import com.cqupt.project.shop.pojo.User;
 import com.cqupt.project.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
 package com.cqupt.project.shop.dao;
 
-import com.cqupt.project.shop.entity.User;
+import com.cqupt.project.shop.pojo.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

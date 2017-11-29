@@ -1,4 +1,4 @@
-package com.cqupt.project.shop.entity;
+package com.cqupt.project.shop.pojo;
 
 import java.util.Date;
 

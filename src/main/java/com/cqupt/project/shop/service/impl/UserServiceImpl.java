@@ -4,7 +4,7 @@ import com.cqupt.project.shop.common.Constant;
 import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.common.TokenCache;
 import com.cqupt.project.shop.dao.UserMapper;
-import com.cqupt.project.shop.entity.User;
+import com.cqupt.project.shop.pojo.User;
 import com.cqupt.project.shop.service.UserService;
 import com.cqupt.project.shop.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
@@ -29,12 +29,13 @@ public class UserServiceImpl implements UserService {
     public ServerResponse<User> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);
         if (resultCount == 0) {
-            logger.error("用户名不存在");
+            logger.error("用户名" + username + "不存在");
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
         String MD5password = MD5Util.MD5EncodeUtf8(password);
         User user = userMapper.selectLogin(username, MD5password);
         if (user == null) {
+            logger.error(username + ":密码错误");
             return ServerResponse.createByErrorMessage("密码错误");
         }
         user.setPassword(StringUtils.EMPTY);
@@ -167,6 +168,14 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
+    }
+
+    @Override
+    public ServerResponse checkAdminRole(User user) {
+        if (user != null && user.getRole() == Constant.Role.ROLE_ADMIN) {
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 
 
