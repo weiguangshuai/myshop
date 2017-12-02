@@ -5,10 +5,13 @@ import com.cqupt.project.shop.common.ResponseCode;
 import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.pojo.Product;
 import com.cqupt.project.shop.pojo.User;
+import com.cqupt.project.shop.service.FileService;
 import com.cqupt.project.shop.service.ProductService;
 import com.cqupt.project.shop.service.UserService;
+import com.cqupt.project.shop.util.PropertiesUtil;
 import com.cqupt.project.shop.vo.ProductListVo;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,9 @@ public class ProductManageController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FileService fileService;
 
     /**
      * 保存商品
@@ -150,11 +156,34 @@ public class ProductManageController {
         return ServerResponse.createByErrorMessage("无权限操作");
     }
 
-    public ServerResponse<Map> upload(MultipartFile file, HttpServletRequest request) {
-        String path = request.getSession().getServletContext().getRealPath("upload");
-        //todo
-        return null;
+    /**
+     * 文件上传
+     *
+     * @param session
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "upload.do", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<Map> upload(HttpSession session, MultipartFile file, HttpServletRequest request) {
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse
+                    .createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+        }
+        if (userService.checkAdminRole(user).isSuccess()) {
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            String uploadFileString = fileService.upload(file, path);
+            String url = PropertiesUtil.getProperty("ftp.server.http.prefix") + uploadFileString;
+            Map<String, String> fileMap = Maps.newHashMap();
+            fileMap.put("url", url);
+            fileMap.put("uri", uploadFileString);
+            return ServerResponse.createBySuccess(fileMap);
+        }
+        return ServerResponse.createByErrorMessage("无权限操作");
     }
 
+    //todo 富文本上传
 
 }

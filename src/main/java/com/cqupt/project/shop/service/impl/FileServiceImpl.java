@@ -1,6 +1,8 @@
 package com.cqupt.project.shop.service.impl;
 
 import com.cqupt.project.shop.service.FileService;
+import com.cqupt.project.shop.util.FTPUtil;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import java.util.UUID;
 
 /**
  * @author weigs
- * @date 2017/12/2 0002
+ * @date 2017/12/2 000
  */
 @Service
 public class FileServiceImpl implements FileService {
@@ -35,11 +37,8 @@ public class FileServiceImpl implements FileService {
         File uploadFile = new File(path, uploadFileName);
         try {
             file.transferTo(uploadFile);
-
-            //todo 上传到ftp服务器
-
-            //todo 删除临时文件
-
+            FTPUtil.uploadFile("img", Lists.newArrayList(uploadFile));
+            uploadFile.delete();
         } catch (IOException e) {
             log.error("文件上传异常", e);
             return null;

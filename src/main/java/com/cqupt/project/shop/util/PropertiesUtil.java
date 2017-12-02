@@ -18,8 +18,7 @@ public class PropertiesUtil {
     private static Properties properties;
 
     static {
-        //todo 填充filename
-        String filename = "";
+        String filename = "myshop.properties";
         properties = new Properties();
         try {
             properties.load(new InputStreamReader(PropertiesUtil.class

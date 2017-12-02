@@ -3,10 +3,7 @@ package com.cqupt.project.shop.service;
 import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.pojo.Product;
 import com.cqupt.project.shop.vo.ProductDetailVo;
-import com.cqupt.project.shop.vo.ProductListVo;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * @author weigs
@@ -57,4 +54,25 @@ public interface ProductService {
      * @return
      */
     ServerResponse<PageInfo> searchProduct(String productName, Long productId, Integer pageNo, Integer pageSize);
+
+    /**
+     * 前台展示商品，要判断商品的状态
+     *
+     * @param productId
+     * @return
+     */
+    ServerResponse<ProductDetailVo> showProductDetail(Long productId);
+
+    /**
+     * 动态搜索功能开发
+     *
+     * @param keyword
+     * @param categoryId
+     * @param pageNo
+     * @param pageSize
+     * @param orderBy
+     * @return
+     */
+    ServerResponse<PageInfo> getProductByKeywordCategory(String keyword,
+                                                         Integer categoryId, int pageNo, int pageSize, String orderBy);
 }
