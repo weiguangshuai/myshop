@@ -19,6 +19,7 @@ public class TokenCache {
     private static LoadingCache<String, String> localCache = CacheBuilder.newBuilder()
             .initialCapacity(1000).maximumSize(10000)
             .expireAfterAccess(5, TimeUnit.MINUTES).build(
+                    //找不到缓存直接创建
                     new CacheLoader<String, String>() {
                         @Override
                         public String load(String s) throws Exception {
