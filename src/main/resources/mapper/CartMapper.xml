@@ -132,6 +132,14 @@
             update_time = now()
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="checkedOrUncheckedProduct" parameterType="map">
+        UPDATE cart
+        SET checked = #{checked}
+        WHERE user_id = #{userId}
+        <if test="productId != null">
+            AND product_id = #{productId}
+        </if>
+    </update>
     <select id="getCartByUserId" parameterType="long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -142,5 +150,10 @@
         SELECT count(1)
         FROM cart
         WHERE checked = 0 AND user_id = #{userId}
+    </select>
+    <select id="selectCartProductCount" resultType="int" parameterType="long">
+        SELECT IFNULL(count(quantity), 0)
+        FROM cart
+        WHERE user_id = #{userId}
     </select>
 </mapper>

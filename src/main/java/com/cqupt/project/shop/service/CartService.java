@@ -36,4 +36,30 @@ public interface CartService {
      * @return
      */
     ServerResponse<CartVo> deleteProduct(Long userId, String productIds);
+
+    /**
+     * 展示商品
+     *
+     * @param userId
+     * @return
+     */
+    ServerResponse<CartVo> list(Long userId);
+
+    /**
+     * 选中与反选中
+     *
+     * @param userId
+     * @param productId
+     * @param checked
+     * @return
+     */
+    ServerResponse<CartVo> selectOrUnSelect(Long userId, Long productId, Integer checked);
+
+    /**
+     * 或者购物车中商品数量
+     *
+     * @param userId
+     * @return
+     */
+    ServerResponse<Integer> getCartProductCount(Long userId);
 }

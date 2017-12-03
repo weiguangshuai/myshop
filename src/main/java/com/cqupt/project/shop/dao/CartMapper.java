@@ -28,4 +28,10 @@ public interface CartMapper {
 
     void deleteByUserIdProductId(@Param("userId") Long userId,
                                  @Param("productList") List<String> productList);
+
+    int checkedOrUncheckedProduct(@Param("userId") Long userId,
+                                  @Param("productId") Long productId,
+                                  @Param("checked") Integer checked);
+
+    int selectCartProductCount(Long userId);
 }

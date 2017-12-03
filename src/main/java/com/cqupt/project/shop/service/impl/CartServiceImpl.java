@@ -73,6 +73,29 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+
+    @Override
+    public ServerResponse<CartVo> list(Long userId) {
+        CartVo cartVo = getCartVoLimit(userId);
+        return ServerResponse.createBySuccess(cartVo);
+
+    }
+
+    @Override
+    public ServerResponse<CartVo> selectOrUnSelect(Long userId, Long productId, Integer checked) {
+        cartMapper.checkedOrUncheckedProduct(userId, productId, checked);
+        return this.list(userId);
+    }
+
+    @Override
+    public ServerResponse<Integer> getCartProductCount(Long userId) {
+        if (userId == null) {
+            return ServerResponse.createBySuccess(0);
+        }
+        return ServerResponse
+                .createBySuccess(cartMapper.selectCartProductCount(userId));
+    }
+
     private CartVo getCartVoLimit(Long userId) {
         CartVo cartVo = new CartVo();
         List<Cart> cartList = cartMapper.getCartByUserId(userId);
