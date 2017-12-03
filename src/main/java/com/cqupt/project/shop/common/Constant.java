@@ -18,6 +18,16 @@ public class Constant {
         int ROLE_ADMIN = 1;
     }
 
+    public interface Cart {
+        //购物车中选中状态
+        int CHECKED = 1;
+        //购物车中未选中状态
+        int UN_CHECKED = 0;
+
+        String LIMIT_NUM_FAIL = "LIMIT_NUM_FAIL";
+        String LIMIT_NUM_SUCCESS = "LIMIT_NUM_SUCCESS";
+    }
+
     public interface ProductListOrderBy {
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc", "price_asc");
     }

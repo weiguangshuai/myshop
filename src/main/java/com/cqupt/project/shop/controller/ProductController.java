@@ -4,7 +4,6 @@ import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.service.ProductService;
 import com.cqupt.project.shop.vo.ProductDetailVo;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
