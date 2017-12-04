@@ -161,6 +161,13 @@
             <artifactId>commons-net</artifactId>
             <version>3.6</version>
         </dependency>
+        <!--二维码生成器-->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

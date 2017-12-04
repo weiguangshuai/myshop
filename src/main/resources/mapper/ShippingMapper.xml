@@ -17,21 +17,34 @@
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         </constructor>
     </resultMap>
-    <!--<sql id="Base_Column_List" >-->
-    <!--ship_id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province, -->
-    <!--receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time-->
-    <!--</sql>-->
+    <sql id="Base_Column_List">
+        ship_id, user_id, receiver_name, receiver_phone, receiver_mobile, receiver_province,
+        receiver_city, receiver_district, receiver_address, receiver_zip, create_time, update_time
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT *
-        <!--<include refid="Base_Column_List" />-->
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM shipping
         WHERE ship_id = #{shipId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByUserIdShippingId" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM shipping WHERE user_id = #{userId} and ship_id = #{shippingId}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         DELETE FROM shipping
         WHERE ship_id = #{shipId,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="com.cqupt.project.shop.pojo.Shipping">
+
+    <!--这样写是为了防止横向越权问题-->
+    <delete id="deleteByShippingIdUserId" parameterType="map">
+        DELETE FROM shipping
+        WHERE user_id = #{userId} AND shipping_id = #{shippingId}
+    </delete>
+
+    <insert id="insert" parameterType="com.cqupt.project.shop.pojo.Shipping" useGeneratedKeys="true"
+            keyProperty="shippingId">
         INSERT INTO shipping (ship_id, user_id, receiver_name,
                               receiver_phone, receiver_mobile, receiver_province,
                               receiver_city, receiver_district, receiver_address,
@@ -118,10 +131,10 @@
                 #{receiverZip,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                now(),
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
+                now(),
             </if>
         </trim>
     </insert>
@@ -159,7 +172,7 @@
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                update_time = now(),
             </if>
         </set>
         where ship_id = #{shipId,jdbcType=BIGINT}
@@ -176,7 +189,28 @@
             receiver_address  = #{receiverAddress,jdbcType=VARCHAR},
             receiver_zip      = #{receiverZip,jdbcType=VARCHAR},
             create_time       = #{createTime,jdbcType=TIMESTAMP},
-            update_time       = #{updateTime,jdbcType=TIMESTAMP}
+            update_time       = now()
         WHERE ship_id = #{shipId,jdbcType=BIGINT}
     </update>
+    <update id="updateByUserIdShipping" parameterType="map">
+        UPDATE shipping
+        SET receiver_name     = #{receiverName,jdbcType=VARCHAR},
+            receiver_phone    = #{receiverPhone,jdbcType=VARCHAR},
+            receiver_mobile   = #{receiverMobile,jdbcType=VARCHAR},
+            receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+            receiver_city     = #{receiverCity,jdbcType=VARCHAR},
+            receiver_district = #{receiverDistrict,jdbcType=VARCHAR},
+            receiver_address  = #{receiverAddress,jdbcType=VARCHAR},
+            receiver_zip      = #{receiverZip,jdbcType=VARCHAR},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            update_time       = now()
+        WHERE ship_id = #{shipId,jdbcType=BIGINT}
+              AND user_id = #{userId}
+    </update>
+
+    <select id="selectByUserId" parameterType="long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM shipping WHERE user_id = #{userId}
+    </select>
 </mapper>
