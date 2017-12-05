@@ -19,15 +19,35 @@
             <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         </constructor>
     </resultMap>
-    <!--<sql id="Base_Column_List">-->
-    <!--id, order_no, user_id, shipping_id, payment, payment_type, postage, status, payment_time,-->
-    <!--send_time, end_time, close_time, create_time, update_time-->
-    <!--</sql>-->
+    <sql id="Base_Column_List">
+        id, order_no, user_id, shipping_id, payment, payment_type, postage, status, payment_time,
+        send_time, end_time, close_time, create_time, update_time
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT *
-        <!--<include refid="Base_Column_List" />-->
+        SELECT
+        <include refid="Base_Column_List"/>
         FROM `order`
         WHERE id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByUserIdOrderNo" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `order` WHERE user_id = #{userId} and order_no=#{orderNo}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `order` WHERE user_id = #{userId}
+    </select>
+    <select id="selectAllOrder" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `order`
+    </select>
+    <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `order` WHERE order_no = #{orderNo}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         DELETE FROM `order`
@@ -35,10 +55,10 @@
     </delete>
     <insert id="insert" parameterType="com.cqupt.project.shop.pojo.Order">
         INSERT INTO `order` (id, order_no, user_id,
-                           shipping_id, payment, payment_type,
-                           postage, status, payment_time,
-                           send_time, end_time, close_time,
-                           create_time, update_time)
+                             shipping_id, payment, payment_type,
+                             postage, status, payment_time,
+                             send_time, end_time, close_time,
+                             create_time, update_time)
         VALUES (#{id,jdbcType=BIGINT}, #{orderNo,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
                                        #{shippingId,jdbcType=BIGINT}, #{payment,jdbcType=DECIMAL},
                                        #{paymentType,jdbcType=INTEGER},
@@ -46,7 +66,7 @@
                                        #{paymentTime,jdbcType=TIMESTAMP},
                                        #{sendTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
                 #{closeTime,jdbcType=TIMESTAMP},
-                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+                now(), now())
     </insert>
     <insert id="insertSelective" parameterType="com.cqupt.project.shop.pojo.Order">
         insert into `order`
@@ -132,10 +152,10 @@
                 #{closeTime,jdbcType=TIMESTAMP},
             </if>
             <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
+                now(),
             </if>
             <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
+                now(),
             </if>
         </trim>
     </insert>
@@ -179,7 +199,7 @@
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
+                update_time = now(),
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
