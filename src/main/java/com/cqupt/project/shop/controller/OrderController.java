@@ -75,7 +75,7 @@ public class OrderController {
      * @param orderNo
      * @return
      */
-    @RequestMapping(value = "get_order_product.do")
+    @RequestMapping(value = "detail.do")
     @ResponseBody
     public ServerResponse<OrderVo> detail(HttpSession session, Long orderNo) {
         User user = (User) session.getAttribute(Constant.CURRENT_USER);
