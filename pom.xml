@@ -167,6 +167,17 @@
             <artifactId>core</artifactId>
             <version>3.3.0</version>
         </dependency>
+        <!--websocket-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>4.3.8.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>4.3.8.RELEASE</version>
+        </dependency>
 
     </dependencies>
 
