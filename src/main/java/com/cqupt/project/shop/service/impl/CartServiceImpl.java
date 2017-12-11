@@ -13,11 +13,11 @@ import com.cqupt.project.shop.vo.CartProductVo;
 import com.cqupt.project.shop.vo.CartVo;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,6 +35,9 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Override
     public ServerResponse<CartVo> add(Long userId, Long productId, Integer count) {
         Cart cart = cartMapper.selectCartByUserIdProductId(userId, productId);
@@ -45,6 +48,7 @@ public class CartServiceImpl implements CartService {
             cartItem.setProductId(productId);
             cartItem.setUserId(userId);
             cartItem.setChecked(Constant.Cart.CHECKED);
+            cartMapper.insert(cartItem);
         } else {
             //产品已经在购物车
             count = cart.getQuantity() + count;
@@ -52,6 +56,8 @@ public class CartServiceImpl implements CartService {
             cartMapper.updateByPrimaryKey(cart);
         }
         CartVo cartVo = getCartVoLimit(userId);
+        String cartVostr = new GsonBuilder().create().toJson(cartVo);
+        redisTemplate.opsForValue().set("cartvolist" + userId, cartVostr);
         return ServerResponse.createBySuccess(cartVo);
     }
 
@@ -79,7 +85,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ServerResponse<CartVo> list(Long userId) {
-        CartVo cartVo = getCartVoLimit(userId);
+        CartVo cartVo = null;
+        String cartVoStr = redisTemplate.opsForValue().get("cartvolist" + userId);
+        if (StringUtils.isBlank(cartVoStr)) {
+            cartVo = getCartVoLimit(userId);
+        }
+        cartVo = new GsonBuilder().create().fromJson(cartVoStr, CartVo.class);
         return ServerResponse.createBySuccess(cartVo);
 
     }
@@ -161,10 +172,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private boolean getAllCheckStatus(Long userId) {
-        if (userId == null) {
-            return false;
-        }
-        return cartMapper.selectCartProductCheckedByUserId(userId) == 0;
+        return userId != null && cartMapper.selectCartProductCheckedByUserId(userId) == 0;
     }
 
 }

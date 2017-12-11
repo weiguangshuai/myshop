@@ -44,7 +44,7 @@
     </delete>
 
     <insert id="insert" parameterType="com.cqupt.project.shop.pojo.Shipping" useGeneratedKeys="true"
-            keyProperty="shippingId">
+            keyProperty="shipId">
         INSERT INTO shipping (ship_id, user_id, receiver_name,
                               receiver_phone, receiver_mobile, receiver_province,
                               receiver_city, receiver_district, receiver_address,

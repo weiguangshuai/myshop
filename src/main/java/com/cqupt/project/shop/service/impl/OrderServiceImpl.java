@@ -285,7 +285,7 @@ public class OrderServiceImpl implements OrderService {
 
     private Order assembleOrder(Long userId, Long shipId, BigDecimal pay) {
         Order order = new Order();
-        long orderNo = generateOrderNo();
+        long orderNo = generateOrderNo(userId);
         order.setOrderNo(orderNo);
         order.setStatus(Constant.OrderStatus.NOT_PAY.getCode());
         order.setPostage(0);
@@ -305,10 +305,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private long generateOrderNo() {
+    private long generateOrderNo(long userId) {
         //todo 生成订单号有待优化
         long currentTime = System.currentTimeMillis();
-        return currentTime + new Random().nextInt(100);
+        return userId + currentTime + new Random().nextInt(100);
     }
 
     private BigDecimal getOrderTotalPrice(List<OrderItem> orderItems) {
