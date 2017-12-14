@@ -1,9 +1,13 @@
 package com.cqupt.project.shop.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Product {
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = -7212062819817625946L;
+
     private Long productId;
 
     private Integer categoryId;

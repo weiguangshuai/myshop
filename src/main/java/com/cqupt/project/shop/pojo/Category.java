@@ -1,8 +1,12 @@
 package com.cqupt.project.shop.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Category {
+public class Category implements Serializable {
+
+    private static final long serialVersionUID = -4675276731478104760L;
+
     private Integer id;
 
     private Integer parentId;

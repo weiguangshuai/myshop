@@ -1,9 +1,13 @@
 package com.cqupt.project.shop.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class OrderItem {
+public class OrderItem implements Serializable {
+
+    private static final long serialVersionUID = 3748394805595799544L;
+
     private Long id;
 
     private Long userId;

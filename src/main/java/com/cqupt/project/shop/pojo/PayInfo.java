@@ -1,8 +1,12 @@
 package com.cqupt.project.shop.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PayInfo {
+public class PayInfo implements Serializable {
+
+    private static final long serialVersionUID = 4321477603763828159L;
+
     private Long id;
 
     private Long userId;

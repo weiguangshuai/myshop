@@ -1,8 +1,12 @@
 package com.cqupt.project.shop.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1190592108133011834L;
+
     private Long userId;
 
     private String username;

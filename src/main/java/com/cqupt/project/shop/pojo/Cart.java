@@ -1,8 +1,12 @@
 package com.cqupt.project.shop.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Cart {
+public class Cart implements Serializable {
+
+    private static final long serialVersionUID = 6412000416892542234L;
+
     private Integer id;
 
     private Long userId;
