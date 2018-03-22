@@ -12,7 +12,6 @@ import com.cqupt.project.shop.util.DateTimeUtil;
 import com.cqupt.project.shop.util.PropertiesUtil;
 import com.cqupt.project.shop.vo.ProductDetailVo;
 import com.cqupt.project.shop.vo.ProductListVo;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -181,6 +180,12 @@ public class ProductServiceImpl implements ProductService {
         return ServerResponse.createBySuccess(pageInfo);
     }
 
+    /**
+     * 封装产品细节
+     *
+     * @param product
+     * @return
+     */
     private ProductDetailVo assembleProductDetailVo(Product product) {
         ProductDetailVo productDetailVo = new ProductDetailVo();
         productDetailVo.setId(product.getProductId());
@@ -208,6 +213,12 @@ public class ProductServiceImpl implements ProductService {
         return productDetailVo;
     }
 
+    /**
+     * 封装产品列表
+     *
+     * @param product
+     * @return
+     */
     private ProductListVo assembleProductListVo(Product product) {
         ProductListVo productListVo = new ProductListVo();
         productListVo.setId(product.getProductId());

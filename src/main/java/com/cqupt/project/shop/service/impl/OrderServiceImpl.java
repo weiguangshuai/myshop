@@ -12,7 +12,6 @@ import com.cqupt.project.shop.vo.OrderItemVo;
 import com.cqupt.project.shop.vo.OrderProductVo;
 import com.cqupt.project.shop.vo.OrderVo;
 import com.cqupt.project.shop.vo.ShippingVo;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
