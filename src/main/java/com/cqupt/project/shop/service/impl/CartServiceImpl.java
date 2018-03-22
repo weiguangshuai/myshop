@@ -110,6 +110,11 @@ public class CartServiceImpl implements CartService {
                 .createBySuccess(cartMapper.selectCartProductCount(userId));
     }
 
+    /**
+     * 获取商品在购物车中被限制的数量
+     * @param userId
+     * @return
+     */
     private CartVo getCartVoLimit(Long userId) {
         CartVo cartVo = new CartVo();
         List<Cart> cartList = cartMapper.getCartByUserId(userId);

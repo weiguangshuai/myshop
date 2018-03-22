@@ -84,7 +84,6 @@ public class CategoryServiceImpl implements CategoryService {
         return ServerResponse.createBySuccess(categoryIdList);
     }
 
-
     //递归算法
     private Set<Category> findChildCategory(Set<Category> categorySet, Integer categoryId) {
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
