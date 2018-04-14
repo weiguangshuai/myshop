@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,8 +34,6 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductMapper productMapper;
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     public ServerResponse<CartVo> add(Long userId, Long productId, Integer count) {
@@ -57,7 +54,6 @@ public class CartServiceImpl implements CartService {
         }
         CartVo cartVo = getCartVoLimit(userId);
         String cartVostr = new GsonBuilder().create().toJson(cartVo);
-        redisTemplate.opsForValue().set("cartvolist" + userId, cartVostr);
         return ServerResponse.createBySuccess(cartVo);
     }
 
@@ -86,13 +82,13 @@ public class CartServiceImpl implements CartService {
     @Override
     public ServerResponse<CartVo> list(Long userId) {
         CartVo cartVo = null;
-        String cartVoStr = redisTemplate.opsForValue().get("cartvolist" + userId);
-        if (StringUtils.isBlank(cartVoStr)) {
-            cartVo = getCartVoLimit(userId);
-        }
-        cartVo = new GsonBuilder().create().fromJson(cartVoStr, CartVo.class);
-        return ServerResponse.createBySuccess(cartVo);
-
+//        String cartVoStr = redisTemplate.opsForValue().get("cartvolist" + userId);
+//        if (StringUtils.isBlank(cartVoStr)) {
+//            cartVo = getCartVoLimit(userId);
+//        }
+//        cartVo = new GsonBuilder().create().fromJson(cartVoStr, CartVo.class);
+//        return ServerResponse.createBySuccess(cartVo);
+        return null;
     }
 
     @Override
@@ -112,6 +108,7 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 获取商品在购物车中被限制的数量
+     *
      * @param userId
      * @return
      */

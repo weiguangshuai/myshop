@@ -178,12 +178,13 @@
             <artifactId>spring-messaging</artifactId>
             <version>4.3.9.RELEASE</version>
         </dependency>
+
         <!--对应spring的4.3.9版本-->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>1.8.4.RELEASE</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.data</groupId>-->
+            <!--<artifactId>spring-data-redis</artifactId>-->
+            <!--<version>1.8.4.RELEASE</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>

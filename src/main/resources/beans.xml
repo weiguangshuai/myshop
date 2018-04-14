@@ -41,26 +41,30 @@
 
     <context:component-scan base-package="com.cqupt.project"/>
 
-    <!--websocket配置-->
-    <!--配置连接路径/app/hello-->
-    <websocket:message-broker application-destination-prefix="/app">
-        <websocket:stomp-endpoint path="/hello">
-            <websocket:sockjs/>
-        </websocket:stomp-endpoint>
-        <!--配置发送路径前缀/topic-->
-        <websocket:simple-broker prefix="/topic"/>
-    </websocket:message-broker>
-
     <!--redis配置-->
-    <bean class="redis.clients.jedis.JedisPoolConfig" id="jedisPoolConfig"/>
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-          p:hostName="127.0.0.1"
-          p:port="6379"
-          p:usePool="true"
-          p:poolConfig-ref="jedisPoolConfig"/>
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!--JedisPool最大空闲连接数-->
+        <property name="maxIdle" value="30"/>
+        <!--JedisPool最小空闲连接数，即初始化连接数-->
+        <property name="minIdle" value="10"/>
+        <!--从JedisPool获取jedis实例时检查连接的有效性，默认是false-->
+        <property name="testOnBorrow" value="false"/>
+        <!--表示有一个idle object evitor线程对idle object进行扫描，如果validate失败，此object会被从pool中drop掉-->
+        <property name="testWhileIdle" value="false"/>
+        <!--将jedis实例归还连接池时检查连接的有效性，默认是false ；test开启太多会影响性能，都不开启异常连接可能会被使用，建议至少开启一个-->
+        <property name="testOnReturn" value="true"/>
+        <!--JedisPool最大连接数-->
+        <property name="maxTotal" value="300"/>
+        <!--从JedisPool获取连接等待毫秒数，超时则抛异常;若blockWhenExhausted为false，该配置项无效  -->
+        <property name="maxWaitMillis" value="4000"/>
+        <!--blockWhenExhausted   表示连接耗尽时是否阻塞, false报异常,ture阻塞maxWaitMillis直到超时 ;不配默认是true；建议配置为false  -->
+        <property name="blockWhenExhausted" value="false"/>
+    </bean>
 
-
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-          p:connectionFactory-ref="jedisConnectionFactory"/>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+        <constructor-arg name="host" value="localhost"/>
+        <constructor-arg name="port" value="6379"/>
+    </bean>
 
 </beans>

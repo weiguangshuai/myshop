@@ -35,6 +35,7 @@ public class PropertiesUtil {
             return null;
         }
         return value.trim();
+
     }
 
     public static String getProperty(String key, String defaultValue) {
