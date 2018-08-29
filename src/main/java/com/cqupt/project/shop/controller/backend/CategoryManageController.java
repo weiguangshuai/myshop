@@ -5,8 +5,12 @@ import com.cqupt.project.shop.common.ResponseCode;
 import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.pojo.Category;
 import com.cqupt.project.shop.pojo.User;
+import com.cqupt.project.shop.redis.JedisClient;
 import com.cqupt.project.shop.service.CategoryService;
 import com.cqupt.project.shop.service.UserService;
+import com.cqupt.project.shop.util.CookieUtil;
+import com.cqupt.project.shop.util.JsonUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -30,20 +35,31 @@ public class CategoryManageController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private JedisClient jedisClient;
+
     /**
      * 添加分类
      *
-     * @param httpSession
+     * @param request
      * @param categoryName
      * @param parentId
      * @return
      */
     @RequestMapping(value = "add_category.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addCategory(HttpSession httpSession, String categoryName,
+    public ServerResponse addCategory(HttpServletRequest request, String categoryName,
                                       @RequestParam(value = "parentId",
                                               defaultValue = "0") int parentId) {
-        User user = (User) httpSession.getAttribute(Constant.CURRENT_USER);
+        String token = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(token)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        String userJsonStr = jedisClient.get(token);
+        if (StringUtils.isEmpty(userJsonStr)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        User user = JsonUtil.stringToObj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                     "用户未登录，请登录");
@@ -58,15 +74,23 @@ public class CategoryManageController {
     /**
      * 更新分类名称
      *
-     * @param session
+     * @param request
      * @param categoryId
      * @param categoryName
      * @return
      */
     @RequestMapping(value = "set_category_name.do", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<String> setCategoryName(HttpSession session, Integer categoryId, String categoryName) {
-        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+    public ServerResponse<String> setCategoryName(HttpServletRequest request, Integer categoryId, String categoryName) {
+        String token = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(token)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        String userJsonStr = jedisClient.get(token);
+        if (StringUtils.isEmpty(userJsonStr)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        User user = JsonUtil.stringToObj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                     "用户未登录，请登录");
@@ -83,16 +107,24 @@ public class CategoryManageController {
     /**
      * 获取同级孩子节点的分类
      *
-     * @param session
+     * @param request
      * @param categoryId
      * @return
      */
 
     @RequestMapping(value = "get_category.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Category>> getChildrenParallelCategory(HttpSession session,
+    public ServerResponse<List<Category>> getChildrenParallelCategory(HttpServletRequest request,
                                                                       @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
-        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+        String token = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(token)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        String userJsonStr = jedisClient.get(token);
+        if (StringUtils.isEmpty(userJsonStr)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        User user = JsonUtil.stringToObj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                     "用户未登录，请登录");
@@ -103,15 +135,23 @@ public class CategoryManageController {
     /**
      * 获取该分类下的所有子分类id
      *
-     * @param session
+     * @param request
      * @param categoryId
      * @return
      */
     @RequestMapping(value = "get_deep_category.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<List<Integer>> getCategoryAndDeepChildrenCategory(HttpSession session,
+    public ServerResponse<List<Integer>> getCategoryAndDeepChildrenCategory(HttpServletRequest request,
                                                                             @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
-        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+        String token = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(token)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        String userJsonStr = jedisClient.get(token);
+        if (StringUtils.isEmpty(userJsonStr)) {
+            return ServerResponse.createByErrorMessage("请登录");
+        }
+        User user = JsonUtil.stringToObj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
                     "用户未登录，请登录");

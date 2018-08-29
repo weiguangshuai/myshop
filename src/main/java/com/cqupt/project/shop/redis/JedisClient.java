@@ -41,4 +41,6 @@ public interface JedisClient {
     long del(String key);
 
     long hdel(String hkey, String key);
+
+    String setEx(String key, String value, int exTime);
 }

@@ -9,6 +9,9 @@
     2、默认提供一系列的功能:数据绑定，数字和日期的format@NumberFormat,@DateTimeFormat
     3、xml,json的默认读写支持-->
     <mvc:annotation-driven/>
+    <context:component-scan base-package="com.cqupt.project"/>
+    <!--<mvc:resources mapping="/swagger/**" location="/dist/"/>-->
+    <bean class="com.cqupt.project.SwaggerConfig"/>
     <!--<mvc:message-converters>-->
     <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
     <!--<property name="supportedMediaTypes">-->
@@ -42,5 +45,4 @@
     </bean>
     <!--扫描controller相关的注解-->
     <context:component-scan base-package="com.cqupt.project"/>
-
 </beans>

@@ -1,6 +1,8 @@
 package com.cqupt.project.shop.redis.impl;
 
 import com.cqupt.project.shop.redis.JedisClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -31,6 +33,8 @@ import redis.clients.jedis.JedisPool;
  */
 @Service
 public class JedisClientSingle implements JedisClient {
+    private static final Logger log = LoggerFactory
+            .getLogger(JedisClientSingle.class);
 
     @Autowired
     private JedisPool jedisPool;
@@ -82,6 +86,11 @@ public class JedisClientSingle implements JedisClient {
     @Override
     public long hdel(String hkey, String key) {
         return getResource().hdel(hkey, key);
+    }
+
+    @Override
+    public String setEx(String key, String value, int exTime) {
+        return getResource().setex(key, exTime, value);
     }
 
     public void setJedisPool(JedisPool jedisPool) {

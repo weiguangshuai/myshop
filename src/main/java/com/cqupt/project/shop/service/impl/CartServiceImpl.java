@@ -6,14 +6,15 @@ import com.cqupt.project.shop.dao.CartMapper;
 import com.cqupt.project.shop.dao.ProductMapper;
 import com.cqupt.project.shop.pojo.Cart;
 import com.cqupt.project.shop.pojo.Product;
+import com.cqupt.project.shop.redis.JedisClient;
 import com.cqupt.project.shop.service.CartService;
 import com.cqupt.project.shop.util.BigDecimalUtil;
+import com.cqupt.project.shop.util.GsonConvertUtil;
 import com.cqupt.project.shop.util.PropertiesUtil;
 import com.cqupt.project.shop.vo.CartProductVo;
 import com.cqupt.project.shop.vo.CartVo;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private JedisClient jedisClient;
 
     @Override
     public ServerResponse<CartVo> add(Long userId, Long productId, Integer count) {
@@ -53,7 +56,10 @@ public class CartServiceImpl implements CartService {
             cartMapper.updateByPrimaryKey(cart);
         }
         CartVo cartVo = getCartVoLimit(userId);
-        String cartVostr = new GsonBuilder().create().toJson(cartVo);
+        //将新添加的数据存入redis中
+        String redisKey = "cart_" + userId + "_";
+        String redisValue = GsonConvertUtil.convertObjectToJSON(cartVo);
+        jedisClient.set(redisKey, redisValue);
         return ServerResponse.createBySuccess(cartVo);
     }
 
@@ -66,13 +72,17 @@ public class CartServiceImpl implements CartService {
         cartMapper.updateByPrimaryKeySelective(cart);
 
         CartVo cartVo = getCartVoLimit(userId);
+        //将更新的数据更新到redis中
+        String redisKey = "cart_" + userId + "_";
+        String redisValue = GsonConvertUtil.convertObjectToJSON(cartVo);
+        jedisClient.set(redisKey, redisValue);
         return ServerResponse.createBySuccess(cartVo);
     }
 
     @Override
     public ServerResponse<CartVo> deleteProduct(Long userId, String productIds) {
         List<String> productList = Splitter.on(",").splitToList(productIds);
-        if (productList != null && productList.size() > 0) {
+        if (productList.size() > 0) {
             cartMapper.deleteByUserIdProductId(userId, productList);
         }
         return null;
@@ -82,13 +92,19 @@ public class CartServiceImpl implements CartService {
     @Override
     public ServerResponse<CartVo> list(Long userId) {
         CartVo cartVo = null;
-//        String cartVoStr = redisTemplate.opsForValue().get("cartvolist" + userId);
-//        if (StringUtils.isBlank(cartVoStr)) {
-//            cartVo = getCartVoLimit(userId);
-//        }
-//        cartVo = new GsonBuilder().create().fromJson(cartVoStr, CartVo.class);
-//        return ServerResponse.createBySuccess(cartVo);
-        return null;
+        String redisKey = "cart_" + userId + "_";
+        String cartVoStr = jedisClient.get(redisKey);
+        if (StringUtils.isBlank(cartVoStr)) {
+            cartVo = getCartVoLimit(userId);
+            jedisClient.set(redisKey, GsonConvertUtil.convertObjectToJSON(cartVo));
+        } else {
+            cartVo = GsonConvertUtil.convertJSONToObject(cartVoStr, CartVo.class);
+
+        }
+        if (cartVo == null) {
+            return ServerResponse.createByErrorMessage("未找到数据");
+        }
+        return ServerResponse.createBySuccess(cartVo);
     }
 
     @Override

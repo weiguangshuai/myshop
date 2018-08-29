@@ -48,7 +48,6 @@ public class OrderManageController {
         }
 
         if (userService.checkAdminRole(user).isSuccess()) {
-
             return orderService.manageList(pageNo, pageSize);
         } else {
             return ServerResponse.createByErrorMessage("无权限操作");

@@ -4,6 +4,7 @@ import com.cqupt.project.shop.common.Constant;
 import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.dao.*;
 import com.cqupt.project.shop.pojo.*;
+import com.cqupt.project.shop.redis.JedisClient;
 import com.cqupt.project.shop.service.OrderService;
 import com.cqupt.project.shop.util.BigDecimalUtil;
 import com.cqupt.project.shop.util.DateTimeUtil;
@@ -44,6 +45,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ShippingMapper shippingMapper;
+
+    @Autowired
+    private JedisClient jedisClient;
 
     @Override
     public ServerResponse createOrder(Long userId, Long shipId) {

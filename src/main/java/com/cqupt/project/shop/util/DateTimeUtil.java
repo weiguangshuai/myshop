@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2017/11/29 0029
  */
 public class DateTimeUtil {
-    public static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static Date strToDate(String dateTimeStr, String formatStr) {
         DateTimeFormatter dateTimeFormat = DateTimeFormat.forPattern(formatStr);
