@@ -31,13 +31,14 @@ import redis.clients.jedis.JedisPool;
  * @author weigs
  * @date 2018/4/14 0014
  */
-@Service
+@Deprecated
 public class JedisClientSingle implements JedisClient {
     private static final Logger log = LoggerFactory
             .getLogger(JedisClientSingle.class);
 
     @Autowired
     private JedisPool jedisPool;
+
 
     private Jedis getResource() {
         return jedisPool.getResource();

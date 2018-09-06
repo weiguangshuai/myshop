@@ -1,6 +1,5 @@
 package com.cqupt.project.shop.controller;
 
-import com.cqupt.project.shop.common.Constant;
 import com.cqupt.project.shop.common.ServerResponse;
 import com.cqupt.project.shop.pojo.User;
 import com.cqupt.project.shop.redis.JedisClient;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author weigs
