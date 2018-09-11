@@ -221,4 +221,18 @@
             update_time  = #{updateTime,jdbcType=TIMESTAMP}
         WHERE id = #{id,jdbcType=BIGINT}
     </update>
+    <select id="selectOrderStatusByCreateTime" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `order` where status = #{status}
+        <![CDATA[
+        and create_time <= #{date}
+        ]]>
+        order by create_time desc
+    </select>
+    <update id="closeOrderByOrderId" parameterType="int">
+        update `order`
+        set status = 0
+        where id = #{orderId}
+    </update>
 </mapper>

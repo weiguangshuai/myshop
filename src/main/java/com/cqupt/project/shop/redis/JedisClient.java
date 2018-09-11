@@ -43,4 +43,8 @@ public interface JedisClient {
     long hdel(String hkey, String key);
 
     String setEx(String key, String value, int exTime);
+
+    Long setnx(String key, String value);
+
+    String getset(String key, String value);
 }

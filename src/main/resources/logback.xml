@@ -5,8 +5,8 @@
         <encoder>
             <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
         </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
+        <filter class="ch.qos.logback.classic.fil   ter.ThresholdFilter">
+            <level>INFO</level>
         </filter>
     </appender>
 

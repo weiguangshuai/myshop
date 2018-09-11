@@ -3,6 +3,7 @@ package com.cqupt.project.shop.controller;
 import com.cqupt.project.shop.common.Constant;
 import com.cqupt.project.shop.common.ResponseCode;
 import com.cqupt.project.shop.common.ServerResponse;
+import com.cqupt.project.shop.exception.SystemException;
 import com.cqupt.project.shop.pojo.User;
 import com.cqupt.project.shop.redis.JedisClient;
 import com.cqupt.project.shop.service.UserService;
@@ -37,6 +38,15 @@ public class UserController {
 
     @Autowired
     private JedisClient jedisClient;
+
+    @RequestMapping(value = "home.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse home() throws SystemException {
+        if (true) {
+            throw new SystemException("weigs");
+        }
+        return ServerResponse.createBySuccess();
+    }
 
     /**
      * 用户登录

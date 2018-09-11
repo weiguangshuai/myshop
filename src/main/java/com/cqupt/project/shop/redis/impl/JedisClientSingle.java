@@ -94,6 +94,16 @@ public class JedisClientSingle implements JedisClient {
         return getResource().setex(key, exTime, value);
     }
 
+    @Override
+    public Long setnx(String key, String value) {
+        return null;
+    }
+
+    @Override
+    public String getset(String key, String value) {
+        return null;
+    }
+
     public void setJedisPool(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }

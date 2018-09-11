@@ -89,4 +89,12 @@ public interface OrderService {
      * @return
      */
     ServerResponse<String> manageSendGoods(Long orderNo);
+
+
+    /**
+     * 关闭订单
+     *
+     * @param hour
+     */
+    void closeOrder(int hour);
 }

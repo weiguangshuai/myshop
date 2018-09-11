@@ -68,6 +68,16 @@ public class RedisShardedClient implements JedisClient {
 
     @Override
     public String setEx(String key, String value, int exTime) {
-        return null;
+        return getResource().setex(key, exTime, value);
+    }
+
+    @Override
+    public Long setnx(String key, String value) {
+        return getResource().setnx(key, value);
+    }
+
+    @Override
+    public String getset(String key, String value) {
+        return getResource().getSet(key, value);
     }
 }

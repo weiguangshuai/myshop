@@ -12,6 +12,8 @@ public class Constant {
     public static final String CURRENT_USER = "currentUser";
     public static final String EMAIL = "email";
     public static final String USERNAME = "username";
+    public static final int LOCK_TIMEOUT = 50000;
+    public static final String CLOSE_ORDER_TASK_LOCK = "CLOSE_ORDER_TASK_LOCK";
 
     public interface RedisCacheExtime {
         int REDIS_SESSION_EXTIME = 60 * 30;
