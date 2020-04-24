@@ -59,6 +59,7 @@ public class CloseOrderTask {
         } else {
             //未获取到锁，继续判断，判断时间戳，看是否可以重置并获取到锁
             String lockValueStr = jedisClient.get(Constant.CLOSE_ORDER_TASK_LOCK);
+            //判断是否过期后第一个设置锁的线程
             if (lockValueStr != null && System.currentTimeMillis() > Long.parseLong(lockValueStr)) {
                 String getSetResult = jedisClient.getset(Constant.CLOSE_ORDER_TASK_LOCK,
                         String.valueOf(System.currentTimeMillis() + lockTimeout));
